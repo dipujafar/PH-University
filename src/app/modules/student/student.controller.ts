@@ -1,33 +1,30 @@
-import { Request, Response } from 'express';
 import { studentServices } from './student.service';
-import studentValidationSchema from './student.validation';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
 
-const getAllStudents = async (req: Request, res: Response) => {
-  try {
-    const result = await studentServices.getAllStudentsFromDB();
-    res.send({
-      success: true,
-      message: 'All students are retrieved successfully',
-      data: result,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+const getAllStudents = catchAsync(async (req, res) => {
+  const result = await studentServices.getAllStudentsFromDB();
 
-const getSingleStudent = async (req: Request, res: Response) => {
-  try {
-    const { studentId } = req.params;
-    const result = await studentServices.getSingleStudentFromDB(studentId);
-    res.send({
-      success: true,
-      message: 'A student is retrieved successfully',
-      data: result,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'All students are retrieved successfully',
+    data: result,
+  });
+});
+
+const getSingleStudent = catchAsync(async (req, res) => {
+  const { studentId } = req.params;
+  const result = await studentServices.getSingleStudentFromDB(studentId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'A student is retrieved successfully',
+    data: result,
+  });
+});
 
 export const studentController = {
   getAllStudents,
