@@ -11,6 +11,41 @@ const createAcademicSemesterIntoDB = async (payload: TAcademicSemester) => {
   return result;
 };
 
+const getAllAcademicSemesterFromDB = async () => {
+  const result = await AcademicSemester.find();
+  return result;
+};
+
+const getSingleAcademicSemesterFromDB = async (semesterId: string) => {
+  const result = await AcademicSemester.findById({
+    _id: semesterId,
+  });
+  return result;
+};
+
+const updateSingleAcademicSemesterFromDB = async (
+  semesterId: string,
+  payload: TAcademicSemester,
+) => {
+  if (
+    payload.name &&
+    payload.code &&
+    academicSemesterCodeMapper[payload.name] !== payload.code
+  ) {
+    throw new Error('INvalid Semester Code');
+  }
+  const result = await AcademicSemester.findOneAndUpdate(
+    {
+      _id: semesterId,
+    },
+    payload,
+  );
+  return result;
+};
+
 export const AcademicSemesterServices = {
   createAcademicSemesterIntoDB,
+  getAllAcademicSemesterFromDB,
+  getSingleAcademicSemesterFromDB,
+  updateSingleAcademicSemesterFromDB,
 };
