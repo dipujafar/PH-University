@@ -21,9 +21,11 @@ router.get(
 );
 
 router.patch(
-  '/:departmentId',
+  '/update-department/:departmentId',
   validateRequest(
     AcademicDepartmentValidation.updateAcademicDepartmentValidation,
   ),
   AcademicDepartmentControllers.updateSingleAcademicDepartment,
 );
+
+export const AcademicDepartmentRoute = router;
